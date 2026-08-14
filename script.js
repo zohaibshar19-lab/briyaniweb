@@ -62,7 +62,6 @@ function updateCart() {
         return;
     }
 
-
     cartItems.innerHTML = cart.map((item, index) => {
 
         const itemTotal = item.price * item.quantity;
@@ -141,7 +140,6 @@ function filterMenu(category, button) {
 
     button.classList.add("active");
 
-
     document.querySelectorAll(".food-card")
         .forEach(card => {
 
@@ -173,7 +171,7 @@ function checkout() {
 
     closeCart();
 
-    let total = calculateTotal();
+    const total = calculateTotal();
 
     document.getElementById("finalTotal")
         .textContent = total.toLocaleString();
@@ -245,81 +243,130 @@ document.getElementById("orderForm")
             return;
         }
 
-
         const name =
-            document.getElementById("customerName").value.trim();
+            document.getElementById("customerName")
+                .value.trim();
 
         const phone =
-            document.getElementById("customerPhone").value.trim();
+            document.getElementById("customerPhone")
+                .value.trim();
 
         const type =
             document.getElementById("orderType").value;
 
         const address =
-            document.getElementById("customerAddress").value.trim();
+            document.getElementById("customerAddress")
+                .value.trim();
 
         const notes =
-            document.getElementById("orderNotes").value.trim();
+            document.getElementById("orderNotes")
+                .value.trim();
 
 
-        let message = "🍗 *NEW BIRYANI ORDER*%0A";
-        message += "====================%0A%0A";
+        // ==========================================
+        // CREATE A CLEAN WHATSAPP MESSAGE
+        // ==========================================
 
-        message += `👤 *Customer:* ${name}%0A`;
-        message += `📞 *Phone:* ${phone}%0A`;
-        message += `📦 *Order Type:* ${type === "delivery" ? "Delivery" : "Pickup"}%0A`;
+        let message = "";
 
+        message += "🍗 *NEW BIRYANI ORDER*\n";
+        message += "━━━━━━━━━━━━━━━━━━━━\n\n";
+
+        message += "👤 *Customer:* " + name + "\n";
+        message += "📞 *Phone:* " + phone + "\n";
+
+        message += "📦 *Order Type:* " +
+            (type === "delivery" ? "Delivery" : "Pickup") +
+            "\n";
 
         if (type === "delivery") {
-            message += `📍 *Address:* ${address}%0A`;
+            message += "📍 *Address:* " + address + "\n";
         }
 
+        message += "\n";
+        message += "🍛 *ORDER ITEMS*\n";
+        message += "━━━━━━━━━━━━━━━━━━━━\n";
 
-        message += "%0A🍛 *ORDER ITEMS*%0A";
 
-
+        // Add every cart item
         cart.forEach(item => {
 
             const itemTotal =
                 item.price * item.quantity;
 
             message +=
-                `• ${item.name} × ${item.quantity} = Rs. ${itemTotal}%0A`;
-
+                "• " +
+                item.name +
+                " × " +
+                item.quantity +
+                " = Rs. " +
+                itemTotal.toLocaleString() +
+                "\n";
         });
 
 
+        // Total
         const total = calculateTotal();
 
-        message += `%0A💰 *TOTAL: Rs. ${total}*%0A`;
+        message += "\n";
+        message += "━━━━━━━━━━━━━━━━━━━━\n";
+        message += "💰 *TOTAL: Rs. " +
+            total.toLocaleString() +
+            "*\n";
 
 
+        // Notes
         if (notes) {
-            message += `%0A📝 *Notes:* ${notes}%0A`;
+
+            message += "\n";
+            message += "📝 *Customer Notes:*\n";
+            message += notes + "\n";
         }
 
 
-        message += "%0AThank you! ❤️";
+        message += "\n";
+        message += "🙏 Thank you for your order!";
 
+
+        // ==========================================
+        // RESTAURANT WHATSAPP NUMBER
+        // ==========================================
+
+        /*
+            Restaurant WhatsApp number.
+
+            Pakistan example:
+            0316 6653527
+
+            International format:
+            923166653527
+
+            Do NOT use:
+            +92
+            spaces
+            -
+            starting 0
+        */
+
+        const restaurantNumber = "923166653527";
+
+
+        // ==========================================
+        // WHATSAPP URL
+        // ==========================================
 
         /*
             IMPORTANT:
-            Replace this number with the restaurant's
-            actual WhatsApp number.
-
-            Format:
-            Pakistan:
-            923166653527
-
-            Do NOT put + or spaces.
+            encodeURIComponent() is used ONLY ONCE.
+            This fixes the %0A problem.
         */
 
-       const restaurantNumber = "923166653527";
+        const whatsappURL =
+            `https://wa.me/${restaurantNumber}?text=${encodeURIComponent(message)}`;
 
-const whatsappURL =
-    `https://wa.me/${restaurantNumber}?text=${encodeURIComponent(message)}`;
 
-window.open(whatsappURL, "_blank");
+        // Open WhatsApp
+        window.open(whatsappURL, "_blank");
 
     });
 
