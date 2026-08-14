@@ -318,7 +318,7 @@ document.getElementById("orderForm")
 
 
         const whatsappURL =
-            `https://wa.me/${restaurantNumber}?text=${message}`;
+            `https://wa.me/${03166653527}?text=${message}`;
 
 
         window.open(whatsappURL, "_blank");
