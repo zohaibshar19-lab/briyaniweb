@@ -314,14 +314,12 @@ document.getElementById("orderForm")
             Do NOT put + or spaces.
         */
 
-        const restaurantNumber = "923166653527";
+       const restaurantNumber = "923166653527";
 
+const whatsappURL =
+    `https://wa.me/${restaurantNumber}?text=${encodeURIComponent(message)}`;
 
-        const whatsappURL =
-            `https://wa.me/${restaurantNumber}?text=${message}`;
-
-
-        window.open(whatsappURL, "_blank");
+window.open(whatsappURL, "_blank");
 
     });
 
