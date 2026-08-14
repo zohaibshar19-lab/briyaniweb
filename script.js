@@ -309,12 +309,12 @@ document.getElementById("orderForm")
 
             Format:
             Pakistan:
-            923001234567
+            923166653527
 
             Do NOT put + or spaces.
         */
 
-        const restaurantNumber = "923000000000";
+        const restaurantNumber = "923166653527";
 
 
         const whatsappURL =
